@@ -1,7 +1,17 @@
 {
   "name": "@react-audio-widgets/parametric-eq",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A parametric EQ component for React",
+  "author": "Michael Bachmann <mbachmann@bbmsoft.net>",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babymotte/raw-parametric-eq.git"
+  },
+  "bugs": {
+    "url": "https://github.com/babymotte/raw-parametric-eq/issues"
+  },
+  "homepage": "https://github.com/babymotte/raw-parametric-eq#readme",
   "type": "module",
   "scripts": {
     "start": "vite --open",
