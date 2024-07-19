@@ -9,6 +9,7 @@ import {
   EqStyle,
 } from "../types";
 import {
+  clamped,
   linearScale,
   logarithmicScale,
   rasteredLinearScale,
@@ -104,6 +105,7 @@ export function renderEq(
   minimal: boolean,
   style?: EqStyle
 ) {
+  console.log("drawing");
   const { width, height } = bounds;
 
   const scales = getScales(params);
@@ -376,10 +378,11 @@ export function findClosestBand(
   scales: EqScales,
   x: number,
   y: number,
-  canvas: React.MutableRefObject<HTMLCanvasElement | null>,
+  container: React.MutableRefObject<HTMLElement | null>,
   filter?: (band: EqBand, i: number) => boolean
 ) {
-  const bounds = canvas.current?.getBoundingClientRect();
+  const bounds = container.current?.getBoundingClientRect();
+
   const [xMax, yMax] = [bounds?.width || 1, bounds?.height || 1];
   let closest = 0;
   let shortestDistance = 999999999;
@@ -559,13 +562,26 @@ export function hasSlope(band: EqBand) {
   return band.type === EqBandType.LowPass || band.type === EqBandType.HighPass;
 }
 
-function getScales(params: EqParameters): EqScales {
-  const frequencyScale = logarithmicScale(
-    params.minFrequency,
-    params.maxFrequency
+export function useScales(params: EqParameters): EqScales {
+  return React.useMemo(() => {
+    return getScales(params);
+  }, [params]);
+}
+
+function getScales(params: EqParameters) {
+  const frequencyScale = clamped(
+    logarithmicScale(params.minFrequency, params.maxFrequency)
   );
-  const gainScale = linearScale(params.minGain, params.maxGain);
-  const qScale = logarithmicScale(params.minQ, params.maxQ);
-  const slopeScale = rasteredLinearScale(0, slopeOptions?.length - 1 || 0, 1);
+  const gainScale = clamped(linearScale(params.minGain, params.maxGain));
+  const qScale = clamped(logarithmicScale(params.minQ, params.maxQ));
+  const slopeScale = clamped(
+    rasteredLinearScale(0, slopeOptions.length - 1, 1)
+  );
   return { frequencyScale, gainScale, qScale, slopeScale };
+}
+
+export function useDbg<T>(name: string, item: T) {
+  React.useEffect(() => {
+    console.debug(name, item);
+  }, [name, item]);
 }

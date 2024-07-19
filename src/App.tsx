@@ -26,43 +26,72 @@ export default function App() {
         gain: -6,
         q: 50,
       },
+      {
+        type: EqBandType.Bell,
+        bypassed: false,
+        frequency: 5000,
+        gain: 4,
+        q: 0.5,
+      },
     ],
   });
 
-  React.useEffect(() => {
-    console.log(eqState);
-  }, [eqState]);
-
-  const params: EqParameters = {
-    maxFrequency: 24000,
-    minFrequency: 20,
-    maxGain: 12,
-    minGain: -12,
-    maxQ: 100,
-    minQ: 0.1,
-  };
+  const params: EqParameters = React.useMemo(
+    () => ({
+      maxFrequency: 24000,
+      minFrequency: 20,
+      maxGain: 12,
+      minGain: -12,
+      maxQ: 100,
+      minQ: 0.1,
+    }),
+    []
+  );
 
   return (
-    <div
-      id="main"
-      style={{
-        width: "50vw",
-        height: "50vh",
-        backgroundColor: "#333",
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        margin: "auto",
-      }}
-    >
-      <ParametricEQ
-        params={params}
-        state={eqState}
-        style={{ width: "100%", height: "100%" }}
-        onChange={setEqState}
-      />
-    </div>
+    <>
+      <div
+        id="main"
+        style={{
+          width: "50vw",
+          height: "50vh",
+          backgroundColor: "#333",
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
+        }}
+      >
+        <ParametricEQ
+          params={params}
+          state={eqState}
+          style={{ width: "100%", height: "100%" }}
+          onChange={setEqState}
+        />
+      </div>
+      {/* <div
+        id="main"
+        style={{
+          width: "50vw",
+          height: "20vh",
+          backgroundColor: "#333",
+          position: "absolute",
+          top: "50vh",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
+        }}
+      >
+        <ParametricEQ
+          params={params}
+          state={eqState}
+          style={{ width: "100%", height: "100%" }}
+          onChange={setEqState}
+        />
+      </div> */}
+    </>
   );
 }

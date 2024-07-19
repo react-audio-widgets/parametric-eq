@@ -22,7 +22,6 @@ export type EqBand = {
 export type EqState = {
   bypassed: boolean;
   bands: EqBand[];
-  activeBand?: number;
 };
 export type EqParameters = {
   minGain: number;
@@ -43,8 +42,10 @@ export type ParametricEqProps = {
   defaultState?: EqState;
   params: EqParameters;
   style?: React.CSSProperties;
-  onChange?: (state: EqState) => void;
   minimal?: boolean;
+  onTouched?: (touched: boolean) => void;
+  onActiveBandChanged?: (activeBand: number) => void;
+  onChange?: (state: EqState) => void;
 };
 export type EqStyle = React.CSSProperties & {
   // TODO make this something more useful than string
