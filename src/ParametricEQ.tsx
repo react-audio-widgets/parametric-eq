@@ -41,6 +41,7 @@ export default function ParametricEQ({
   const externalStateRef = React.useRef(state);
   const stateRef = React.useRef(state);
   const containerRef = React.useRef(null);
+  const canvasRef = React.useRef(null);
   const touched = React.useRef<boolean>(false);
   const activeBand = React.useRef<number>(0);
 
@@ -237,7 +238,7 @@ export default function ParametricEQ({
   }, [updateState]);
 
   useGestureHandler(
-    containerRef,
+    canvasRef,
     horizontalValue,
     verticalValue,
     contextMenuValue,
@@ -262,7 +263,7 @@ export default function ParametricEQ({
         ...style,
       }}
     >
-      <DynamicCanvas parentRef={containerRef}>
+      <DynamicCanvas parentRef={containerRef} canvasRef={canvasRef}>
         <EqGraph
           minimal={minimal || false}
           state={stateRef.current}
