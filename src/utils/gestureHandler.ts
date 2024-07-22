@@ -17,7 +17,6 @@
 
 import { linearScale, Scale } from "@babymotte/scales";
 import React from "react";
-import { useDbg } from "./utils";
 
 const disableScroll = (e: WheelEvent) => e.preventDefault();
 
@@ -87,8 +86,6 @@ export function useGestureHandler<T extends HTMLElement>(
     },
     [elementRef, handleTouchMove, horizontalValue, verticalValue]
   );
-
-  useDbg("handleContextMenu", handleContextMenu);
 
   const contextMenu = React.useCallback(
     (e: MouseEvent) => {
@@ -228,10 +225,6 @@ export function useGestureHandler<T extends HTMLElement>(
     },
     [elementRef, handleDoubleClick]
   );
-
-  useDbg("contextMenu", contextMenu);
-  useDbg("mouseDown", mouseDown);
-  useDbg("wheel", wheel);
 
   React.useLayoutEffect(() => {
     if (elementRef.current) {

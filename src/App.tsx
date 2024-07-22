@@ -17,48 +17,12 @@
 
 import React from "react";
 import ParametricEQ from "./ParametricEQ";
-import { EqBandType, EqParameters, EqState } from "./types";
+import { EqParameters, EqState } from "./types";
 import { useSet, useSubscribe } from "worterbuch-react";
 
 export default function App() {
   const setEqState = useSet("audio-widgets/eq/demo");
-  const eqState = useSubscribe<EqState>("audio-widgets/eq/demo") || undefined;
-  React.useEffect(() => {
-    if (!eqState) {
-      setEqState({
-        bypassed: false,
-        bands: [
-          {
-            type: EqBandType.HighPass,
-            bypassed: false,
-            frequency: 64,
-            q: 100,
-          },
-          {
-            type: EqBandType.Bell,
-            bypassed: false,
-            frequency: 1000,
-            gain: 3,
-            q: 3,
-          },
-          {
-            type: EqBandType.Bell,
-            bypassed: false,
-            frequency: 3000,
-            gain: -6,
-            q: 50,
-          },
-          {
-            type: EqBandType.Bell,
-            bypassed: false,
-            frequency: 5000,
-            gain: 4,
-            q: 0.5,
-          },
-        ],
-      });
-    }
-  }, [eqState, setEqState]);
+  const eqState = useSubscribe<EqState>("audio-widgets/eq/demo");
 
   const params: EqParameters = React.useMemo(
     () => ({
@@ -78,11 +42,11 @@ export default function App() {
         id="main"
         style={{
           width: "50vw",
-          height: "50vh",
+          height: "33vh",
           backgroundColor: "#333",
           position: "absolute",
           top: 0,
-          bottom: 0,
+          bottom: "50vh",
           left: 0,
           right: 0,
           margin: "auto",
@@ -90,16 +54,16 @@ export default function App() {
       >
         <ParametricEQ
           params={params}
-          state={eqState}
+          state={eqState || undefined}
           style={{ width: "100%", height: "100%" }}
           onChange={setEqState}
         />
       </div>
-      {/* <div
+      <div
         id="main"
         style={{
           width: "50vw",
-          height: "20vh",
+          height: "33vh",
           backgroundColor: "#333",
           position: "absolute",
           top: "50vh",
@@ -111,11 +75,11 @@ export default function App() {
       >
         <ParametricEQ
           params={params}
-          state={eqState}
+          state={eqState || undefined}
           style={{ width: "100%", height: "100%" }}
           onChange={setEqState}
         />
-      </div> */}
+      </div>
     </>
   );
 }

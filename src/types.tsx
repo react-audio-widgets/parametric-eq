@@ -56,7 +56,6 @@ export type EqScales = {
 };
 export type ParametricEqProps = {
   state?: EqState;
-  defaultState?: EqState;
   params: EqParameters;
   style?: React.CSSProperties;
   minimal?: boolean;

@@ -24,7 +24,7 @@ import {
   ParametricEqProps,
 } from "./types";
 import { CanvasComponentProps, DynamicCanvas } from "@babymotte/dynamic-canvas";
-import { findClosestBand, renderEq, useDbg, useScales } from "./utils/utils";
+import { findClosestBand, renderEq, useScales } from "./utils/utils";
 import { useGestureHandler } from "./utils/gestureHandler";
 import { useFakeTouch } from "./utils/fakeTouch";
 
@@ -44,14 +44,11 @@ export default function ParametricEQ({
   const touched = React.useRef<boolean>(false);
   const activeBand = React.useRef<number>(0);
 
-  useDbg("onTouched", onTouched);
-
   const [onTouch, fakeTouch] = useFakeTouch(
     React.useCallback(
       (touched: boolean) => {
         if (onTouched) onTouched(touched);
         if (!touched) {
-          console.info("applying external state");
           stateRef.current = externalStateRef.current;
           setInternalState(externalStateRef.current);
         }
@@ -68,7 +65,6 @@ export default function ParametricEQ({
   React.useEffect(() => {
     externalStateRef.current = state;
     if (!fakeTouch.current) {
-      console.info("applying external state");
       stateRef.current = state;
       setInternalState(state);
     }
@@ -188,8 +184,6 @@ export default function ParametricEQ({
     handleTouched(true);
     handleTouched(false);
   }, [handleTouched]);
-
-  useDbg("onTouch", onTouch);
 
   const handleContextMenu = React.useCallback(
     (x: number, y: number, altAction: boolean) => {
