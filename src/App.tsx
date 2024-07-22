@@ -18,40 +18,47 @@
 import React from "react";
 import ParametricEQ from "./ParametricEQ";
 import { EqBandType, EqParameters, EqState } from "./types";
+import { useSet, useSubscribe } from "worterbuch-react";
 
 export default function App() {
-  const [eqState, setEqState] = React.useState<EqState>({
-    bypassed: false,
-    bands: [
-      {
-        type: EqBandType.HighPass,
+  const setEqState = useSet("audio-widgets/eq/demo");
+  const eqState = useSubscribe<EqState>("audio-widgets/eq/demo") || undefined;
+  React.useEffect(() => {
+    if (!eqState) {
+      setEqState({
         bypassed: false,
-        frequency: 64,
-        q: 100,
-      },
-      {
-        type: EqBandType.Bell,
-        bypassed: false,
-        frequency: 1000,
-        gain: 3,
-        q: 3,
-      },
-      {
-        type: EqBandType.Bell,
-        bypassed: false,
-        frequency: 3000,
-        gain: -6,
-        q: 50,
-      },
-      {
-        type: EqBandType.Bell,
-        bypassed: false,
-        frequency: 5000,
-        gain: 4,
-        q: 0.5,
-      },
-    ],
-  });
+        bands: [
+          {
+            type: EqBandType.HighPass,
+            bypassed: false,
+            frequency: 64,
+            q: 100,
+          },
+          {
+            type: EqBandType.Bell,
+            bypassed: false,
+            frequency: 1000,
+            gain: 3,
+            q: 3,
+          },
+          {
+            type: EqBandType.Bell,
+            bypassed: false,
+            frequency: 3000,
+            gain: -6,
+            q: 50,
+          },
+          {
+            type: EqBandType.Bell,
+            bypassed: false,
+            frequency: 5000,
+            gain: 4,
+            q: 0.5,
+          },
+        ],
+      });
+    }
+  }, [eqState, setEqState]);
 
   const params: EqParameters = React.useMemo(
     () => ({

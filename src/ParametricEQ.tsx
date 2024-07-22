@@ -24,12 +24,12 @@ import {
   ParametricEqProps,
 } from "./types";
 import { CanvasComponentProps, DynamicCanvas } from "@babymotte/dynamic-canvas";
-import { findClosestBand, renderEq, useScales } from "./utils/utils";
+import { findClosestBand, renderEq, useDbg, useScales } from "./utils/utils";
 import { useGestureHandler } from "./utils/gestureHandler";
+import { useFakeTouch } from "./utils/fakeTouch";
 
 export default function ParametricEQ({
   state,
-  defaultState,
   params,
   style,
   onChange,
@@ -37,43 +37,56 @@ export default function ParametricEQ({
   onActiveBandChanged,
   onTouched,
 }: ParametricEqProps) {
-  const [controlled, setControlled] = React.useState(Boolean(state));
-  const [internalState, setInternalState] = React.useState(
-    controlled ? state : defaultState
+  const [internalState, setInternalState] = React.useState(state);
+  const externalStateRef = React.useRef(state);
+  const stateRef = React.useRef(state);
+  const containerRef = React.useRef(null);
+  const touched = React.useRef<boolean>(false);
+  const activeBand = React.useRef<number>(0);
+
+  useDbg("onTouched", onTouched);
+
+  const [onTouch, fakeTouch] = useFakeTouch(
+    React.useCallback(
+      (touched: boolean) => {
+        if (onTouched) onTouched(touched);
+        if (!touched) {
+          console.info("applying external state");
+          stateRef.current = externalStateRef.current;
+          setInternalState(externalStateRef.current);
+        }
+      },
+      [onTouched]
+    ),
+    500
   );
-  const stateRef = React.useRef(internalState);
+
+  React.useEffect(() => {
+    stateRef.current = internalState;
+  }, [internalState]);
+
+  React.useEffect(() => {
+    externalStateRef.current = state;
+    if (!fakeTouch.current) {
+      console.info("applying external state");
+      stateRef.current = state;
+      setInternalState(state);
+    }
+  }, [fakeTouch, state]);
 
   const updateState = React.useCallback(
     (updater: (oldState: EqState) => EqState) => {
       if (stateRef.current) {
-        stateRef.current = updater(stateRef.current);
-        setInternalState(stateRef.current);
+        const newState = updater(stateRef.current);
+        stateRef.current = newState;
+        setInternalState(newState);
         if (onChange) {
-          onChange(stateRef.current);
+          onChange(newState);
         }
       }
     },
     [onChange]
   );
-
-  const isNowControlled = Boolean(state);
-
-  React.useEffect(() => {
-    if (!controlled && isNowControlled) {
-      setControlled(true);
-      console.error("Switching from uncontrolled to controlled EQ!");
-    }
-    if (controlled && !isNowControlled) {
-      setControlled(false);
-      console.error("Switching from controlled to uncontrolled EQ!");
-    }
-  }, [controlled, isNowControlled]);
-
-  const containerRef = React.useRef(null);
-
-  const touched = React.useRef<boolean>(false);
-
-  const activeBand = React.useRef<number>(0);
 
   const updateActiveBand = React.useCallback(
     (band: number) => {
@@ -148,12 +161,9 @@ export default function ParametricEQ({
 
   const handleTouched = React.useCallback(
     (val: boolean) => {
-      touched.current = val;
-      if (onTouched) {
-        onTouched(val);
-      }
+      onTouch(val);
     },
-    [onTouched]
+    [onTouch]
   );
 
   const handleTouchDown = React.useCallback(
@@ -174,11 +184,17 @@ export default function ParametricEQ({
 
   const handleTouchUp = React.useCallback(() => {}, []);
 
-  const handleTouchMove = React.useCallback(() => {}, []);
+  const handleTouchMove = React.useCallback(() => {
+    handleTouched(true);
+    handleTouched(false);
+  }, [handleTouched]);
+
+  useDbg("onTouch", onTouch);
 
   const handleContextMenu = React.useCallback(
     (x: number, y: number, altAction: boolean) => {
       if (stateRef.current && containerRef.current) {
+        onTouch(true);
         if (
           altAction &&
           stateRef.current.bands[activeBand.current].type === EqBandType.Bell
@@ -194,9 +210,10 @@ export default function ParametricEQ({
           );
           updateActiveBand(activeBand);
         }
+        onTouch(false);
       }
     },
-    [params.minGain, scales, updateActiveBand, verticalValue]
+    [onTouch, params.minGain, scales, updateActiveBand, verticalValue]
   );
 
   const handleWheel = React.useCallback(
@@ -209,10 +226,12 @@ export default function ParametricEQ({
           y,
           containerRef
         );
+        handleTouched(true);
         updateActiveBand(activeBand);
+        handleTouched(false);
       }
     },
-    [scales, updateActiveBand]
+    [handleTouched, scales, updateActiveBand]
   );
 
   const handleDoubleClick = React.useCallback(() => {
@@ -252,7 +271,7 @@ export default function ParametricEQ({
       <DynamicCanvas parentRef={containerRef}>
         <EqGraph
           minimal={minimal || false}
-          state={internalState}
+          state={stateRef.current}
           params={params}
         />
       </DynamicCanvas>

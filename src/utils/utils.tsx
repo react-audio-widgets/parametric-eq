@@ -122,7 +122,7 @@ export function renderEq(
   minimal: boolean,
   style?: EqStyle
 ) {
-  console.log("drawing");
+  // console.log("drawing");
   const { width, height } = bounds;
 
   const scales = getScales(params);

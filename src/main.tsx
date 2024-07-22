@@ -18,9 +18,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import { Worterbuch } from "worterbuch-react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <Worterbuch
+      config={{
+        backendScheme: "ws",
+        backendHost: "thinkpad-p14s",
+        backendPort: 8080,
+        backendPath: "/ws",
+      }}
+      automaticReconnect
+      clientName="param-eq-demo"
+    >
+      <App />
+    </Worterbuch>
   </React.StrictMode>
 );
