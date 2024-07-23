@@ -57,6 +57,18 @@ export default function App() {
           state={eqState || undefined}
           style={{ width: "100%", height: "100%" }}
           onChange={setEqState}
+          majorTickMarkStyle={{ stroke: "#555", strokeWidth: "1px" }}
+          minorTickMarkStyle={{ stroke: "#555", strokeWidth: "0.33px" }}
+          tickLabelStyleX={{
+            fill: "#555",
+            fontFamily: "sans-serif",
+            translate: "0.25em 1em",
+          }}
+          tickLabelStyleY={{
+            fill: "#555",
+            fontFamily: "sans-serif",
+            translate: "0.25em 1em",
+          }}
         />
       </div>
       <div
@@ -78,6 +90,8 @@ export default function App() {
           state={eqState || undefined}
           style={{ width: "100%", height: "100%" }}
           onChange={setEqState}
+          majorTickMarkStyle={{ stroke: "#555", strokeWidth: "1px" }}
+          minimal
         />
       </div>
     </>

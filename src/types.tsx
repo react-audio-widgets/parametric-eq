@@ -62,6 +62,10 @@ export type ParametricEqProps = {
   onTouched?: (touched: boolean) => void;
   onActiveBandChanged?: (activeBand: number) => void;
   onChange?: (state: EqState) => void;
+  majorTickMarkStyle?: React.CSSProperties;
+  minorTickMarkStyle?: React.CSSProperties;
+  tickLabelStyleX?: React.CSSProperties;
+  tickLabelStyleY?: React.CSSProperties;
 };
 export type EqStyle = React.CSSProperties & {
   // TODO make this something more useful than string

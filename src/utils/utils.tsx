@@ -426,7 +426,7 @@ export function findClosestBand(
   return closest;
 }
 
-export function majorFrequencyTickMarks(eq: EqParameters) {
+export function majorFrequencyTickMarks(eq: EqParameters): number[] {
   const min = eq.minFrequency;
   const minExp = Math.ceil(Math.log10(min));
 

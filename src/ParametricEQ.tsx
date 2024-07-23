@@ -24,9 +24,21 @@ import {
   ParametricEqProps,
 } from "./types";
 import { CanvasComponentProps, DynamicCanvas } from "@babymotte/dynamic-canvas";
-import { findClosestBand, renderEq, useScales } from "./utils/utils";
+import {
+  findClosestBand,
+  frequencyTickMarkLabels,
+  gainTickMarkLabels,
+  majorFrequencyTickMarks,
+  majorGainTickMarks,
+  minorFrequencyTickMarks,
+  minorGainTickMarks,
+  renderEq,
+  useScales,
+} from "./utils/utils";
 import { useGestureHandler } from "./utils/gestureHandler";
 import { useFakeTouch } from "./utils/fakeTouch";
+import { DynamicSvg } from "@babymotte/dynamic-svg";
+import Scale2D from "@react-audio-widgets/scale-2d";
 
 export default function ParametricEQ({
   state,
@@ -36,6 +48,10 @@ export default function ParametricEQ({
   minimal,
   onActiveBandChanged,
   onTouched,
+  majorTickMarkStyle,
+  minorTickMarkStyle,
+  tickLabelStyleX,
+  tickLabelStyleY,
 }: ParametricEqProps) {
   const [internalState, setInternalState] = React.useState(state);
   const externalStateRef = React.useRef(state);
@@ -44,6 +60,26 @@ export default function ParametricEQ({
   const canvasRef = React.useRef(null);
   const touched = React.useRef<boolean>(false);
   const activeBand = React.useRef<number>(0);
+
+  const [majFreqTicks, setMajFreqTicks] = React.useState<number[]>([]);
+  const [minFreqTicks, setMinFreqTicks] = React.useState<number[]>([]);
+  const [majGainTicks, setMajGainTicks] = React.useState<number[]>([]);
+  const [minGainTicks, setMinGainTicks] = React.useState<number[]>([]);
+  const [freqLabels, setFreqLabels] = React.useState<Map<number, string>>(
+    new Map()
+  );
+  const [gainLabels, setGainLabels] = React.useState<Map<number, string>>(
+    new Map()
+  );
+
+  React.useEffect(() => {
+    setMajFreqTicks(majorFrequencyTickMarks(params));
+    setMinFreqTicks(minorFrequencyTickMarks(params));
+    setMajGainTicks(majorGainTickMarks(params));
+    setMinGainTicks(minorGainTickMarks(params));
+    setFreqLabels(frequencyTickMarkLabels(params));
+    setGainLabels(gainTickMarkLabels(params));
+  }, [params]);
 
   const [onTouch, fakeTouch] = useFakeTouch(
     React.useCallback(
@@ -261,9 +297,37 @@ export default function ParametricEQ({
         width: 400,
         height: 300,
         ...style,
+        display: "grid",
       }}
     >
-      <DynamicCanvas parentRef={containerRef} canvasRef={canvasRef}>
+      <DynamicSvg
+        parentRef={containerRef}
+        style={{
+          pointerEvents: "none",
+          gridColumn: 1,
+          gridRow: 1,
+        }}
+      >
+        <Scale2D
+          scaleX={scales.frequencyScale}
+          scaleY={scales.gainScale}
+          majorTickMarksX={majFreqTicks}
+          minorTickMarksX={minFreqTicks}
+          majorTickMarksY={majGainTicks}
+          minorTickMarksY={minGainTicks}
+          majorTickMarkStyle={majorTickMarkStyle || { visibility: "hidden" }}
+          minorTickMarkStyle={minorTickMarkStyle || { visibility: "hidden" }}
+          tickMarkLabelsX={freqLabels}
+          tickMarkLabelsY={gainLabels}
+          tickLabelStyleX={tickLabelStyleX || { visibility: "hidden" }}
+          tickLabelStyleY={tickLabelStyleY || { visibility: "hidden" }}
+        />
+      </DynamicSvg>
+      <DynamicCanvas
+        parentRef={containerRef}
+        canvasRef={canvasRef}
+        style={{ gridRow: 1, gridColumn: 1 }}
+      >
         <EqGraph
           minimal={minimal || false}
           state={stateRef.current}

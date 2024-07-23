@@ -20,8 +20,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@babymotte/dynamic-canvas": "^1.0.1",
+    "@babymotte/dynamic-canvas": "^1.0.2",
+    "@babymotte/dynamic-svg": "^1.0.0",
     "@babymotte/scales": "^1.0.0",
+    "@react-audio-widgets/scale-2d": "^1.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "worterbuch-react": "^0.45.2"
