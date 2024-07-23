@@ -6,12 +6,12 @@
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/babymotte/raw-parametric-eq.git"
+    "url": "https://github.com/react-audio-widgets/parametric-eq.git"
   },
   "bugs": {
-    "url": "https://github.com/babymotte/raw-parametric-eq/issues"
+    "url": "https://github.com/react-audio-widgets/parametric-eq/issues"
   },
-  "homepage": "https://github.com/babymotte/raw-parametric-eq#readme",
+  "homepage": "https://github.com/react-audio-widgets/parametric-eq#readme",
   "type": "module",
   "scripts": {
     "start": "vite --open",
