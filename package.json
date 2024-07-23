@@ -1,43 +1,48 @@
 {
   "name": "@react-audio-widgets/parametric-eq",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A parametric EQ component for React",
-  "author": "Michael Bachmann <mbachmann@bbmsoft.net>",
-  "license": "AGPL-3.0-or-later",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "^17.0.0 || ^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "react": "^17.0.0 || ^18.0.0",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "release": "npm run build && npm publish",
+    "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-audio-widgets/parametric-eq.git"
+    "url": "git+https://github.com/react-audio-widgets/parametric-eq.git"
   },
+  "author": {
+    "name": "Michael Bachmann",
+    "email": "mbachmann@bbmsoft.net"
+  },
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/react-audio-widgets/parametric-eq/issues"
   },
   "homepage": "https://github.com/react-audio-widgets/parametric-eq#readme",
-  "type": "module",
-  "scripts": {
-    "start": "vite --open",
-    "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
   "dependencies": {
-    "@babymotte/dynamic-canvas": "^1.0.2",
-    "@babymotte/dynamic-svg": "^1.0.0",
+    "@babymotte/dynamic-canvas": "^1.1.0",
+    "@babymotte/dynamic-svg": "^1.1.0",
     "@babymotte/scales": "^1.0.0",
-    "@react-audio-widgets/scale-2d": "^1.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "worterbuch-react": "^0.45.2"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "@typescript-eslint/parser": "^7.15.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.7",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "@react-audio-widgets/scale-2d": "^1.1.0"
   }
 }

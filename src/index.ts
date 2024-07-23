@@ -15,24 +15,14 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import { Worterbuch } from "worterbuch-react";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Worterbuch
-      config={{
-        backendScheme: "ws",
-        backendHost: "thinkpad-p14s",
-        backendPort: 8080,
-        backendPath: "/ws",
-      }}
-      automaticReconnect
-      clientName="param-eq-demo"
-    >
-      <App />
-    </Worterbuch>
-  </React.StrictMode>
-);
+export { default as ParametricEQ } from "./ParametricEQ";
+export {
+  EqBand,
+  EqBandType,
+  EqFilterSlope,
+  EqParameters,
+  EqScales,
+  EqState,
+  EqStyle,
+  ParametricEqProps,
+} from "./types";
