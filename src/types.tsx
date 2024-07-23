@@ -57,18 +57,23 @@ export type EqScales = {
 export type ParametricEqProps = {
   state?: EqState;
   params: EqParameters;
-  style?: React.CSSProperties;
+  style?: EqStyle;
   minimal?: boolean;
   onTouched?: (touched: boolean) => void;
   onActiveBandChanged?: (activeBand: number) => void;
   onChange?: (state: EqState) => void;
   majorTickMarkStyle?: React.CSSProperties;
   minorTickMarkStyle?: React.CSSProperties;
+  tickLabelStyle?: React.CSSProperties;
   tickLabelStyleX?: React.CSSProperties;
   tickLabelStyleY?: React.CSSProperties;
 };
 export type EqStyle = React.CSSProperties & {
   // TODO make this something more useful than string
-  bandStroke: string | string[];
-  sumStroke: string;
+  bandStroke?: string | string[];
+  bandStrokeBypassed?: string | string[];
+  sumStroke?: string;
+  sumStrokeBypassed?: string;
+  sumFill?: string;
+  sumFillBypassed?: string;
 };

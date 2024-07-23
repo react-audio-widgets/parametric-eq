@@ -50,6 +50,7 @@ export default function ParametricEQ({
   onTouched,
   majorTickMarkStyle,
   minorTickMarkStyle,
+  tickLabelStyle,
   tickLabelStyleX,
   tickLabelStyleY,
 }: ParametricEqProps) {
@@ -319,8 +320,12 @@ export default function ParametricEQ({
           minorTickMarkStyle={minorTickMarkStyle || { visibility: "hidden" }}
           tickMarkLabelsX={freqLabels}
           tickMarkLabelsY={gainLabels}
-          tickLabelStyleX={tickLabelStyleX || { visibility: "hidden" }}
-          tickLabelStyleY={tickLabelStyleY || { visibility: "hidden" }}
+          tickLabelStyleX={
+            tickLabelStyleX || tickLabelStyle || { visibility: "hidden" }
+          }
+          tickLabelStyleY={
+            tickLabelStyleY || tickLabelStyle || { visibility: "hidden" }
+          }
         />
       </DynamicSvg>
       <DynamicCanvas
@@ -332,6 +337,7 @@ export default function ParametricEQ({
           minimal={minimal || false}
           state={stateRef.current}
           params={params}
+          style={style}
         />
       </DynamicCanvas>
     </div>

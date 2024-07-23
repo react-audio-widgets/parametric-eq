@@ -43,7 +43,6 @@ export default function App() {
         style={{
           width: "50vw",
           height: "33vh",
-          backgroundColor: "#333",
           position: "absolute",
           top: 0,
           bottom: "50vh",
@@ -55,19 +54,21 @@ export default function App() {
         <ParametricEQ
           params={params}
           state={eqState || undefined}
-          style={{ width: "100%", height: "100%" }}
+          style={{
+            backgroundColor: "#333",
+            width: "100%",
+            height: "100%",
+            bandStroke: ["#f0f8", "#88f8", "#f688", "#6888"],
+            sumStroke: "#80f0",
+            sumFill: "#80f3",
+          }}
           onChange={setEqState}
           majorTickMarkStyle={{ stroke: "#555", strokeWidth: "1px" }}
           minorTickMarkStyle={{ stroke: "#555", strokeWidth: "0.33px" }}
-          tickLabelStyleX={{
+          tickLabelStyle={{
             fill: "#555",
             fontFamily: "sans-serif",
-            translate: "0.25em 1em",
-          }}
-          tickLabelStyleY={{
-            fill: "#555",
-            fontFamily: "sans-serif",
-            translate: "0.25em 1em",
+            translate: "0.25em 1.1em",
           }}
         />
       </div>
@@ -76,7 +77,6 @@ export default function App() {
         style={{
           width: "50vw",
           height: "33vh",
-          backgroundColor: "#333",
           position: "absolute",
           top: "50vh",
           bottom: 0,
@@ -88,7 +88,7 @@ export default function App() {
         <ParametricEQ
           params={params}
           state={eqState || undefined}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", backgroundColor: "#333" }}
           onChange={setEqState}
           majorTickMarkStyle={{ stroke: "#555", strokeWidth: "1px" }}
           minimal

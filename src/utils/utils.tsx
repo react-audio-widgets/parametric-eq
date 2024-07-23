@@ -42,6 +42,8 @@ const slopeOptions: EqFilterSlope[] = [6, 12, 18, 24];
 
 const DEFAULT_BAND_STROKE = "#f808";
 const DEFAULT_SUM_STROKE = "#f80";
+const DEFAULT_BYPASSED_BAND_STROKE = "#fff3";
+const DEFAULT_BYPASSED_SUM_STROKE = "#fff6";
 
 export const COEFFS = [
   [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -53,8 +55,13 @@ export const COEFFS = [
   [1.4142, 1.4142, 0.0, 1.0, 1.0, 0.0],
 ];
 
-function getBandStroke(style: EqStyle | undefined, i: number) {
-  let bandStroke = style?.bandStroke;
+function getBandStroke(
+  style: EqStyle | undefined,
+  i: number,
+  bypassed: boolean
+) {
+  let bandStroke = bypassed ? style?.bandStrokeBypassed : style?.bandStroke;
+
   if (
     typeof bandStroke === "string" &&
     !bandStroke.startsWith("rgb") &&
@@ -63,14 +70,13 @@ function getBandStroke(style: EqStyle | undefined, i: number) {
     bandStroke = bandStroke.split(",");
   }
   if (Array.isArray(bandStroke)) {
-    if (bandStroke.length > i) {
-      bandStroke = bandStroke[i];
-    } else {
-      bandStroke = undefined;
-    }
+    bandStroke = bandStroke[i % bandStroke.length];
   }
 
-  return bandStroke || DEFAULT_BAND_STROKE;
+  return (
+    bandStroke ||
+    (bypassed ? DEFAULT_BYPASSED_BAND_STROKE : DEFAULT_BAND_STROKE)
+  );
 }
 
 export function computeBandCurve(
@@ -148,7 +154,12 @@ export function renderEq(
     true
   );
 
-  const sumStroke = style?.sumStroke || DEFAULT_SUM_STROKE;
+  const sumStroke = eq.bypassed
+    ? style?.sumStrokeBypassed || DEFAULT_BYPASSED_SUM_STROKE
+    : style?.sumStroke || DEFAULT_SUM_STROKE;
+  const sumFill = eq.bypassed
+    ? style?.sumFillBypassed || DEFAULT_BYPASSED_BAND_STROKE
+    : style?.sumFill || DEFAULT_BAND_STROKE;
 
   const y0 = scales.gainScale.convertTo(yScale, 0);
 
@@ -160,7 +171,7 @@ export function renderEq(
   eq.bands
     .filter((b) => !b.bypassed)
     .forEach((b, i) => {
-      const bandStroke = getBandStroke(style, i);
+      const bandStroke = getBandStroke(style, i, eq.bypassed);
       const gains = computeBandCurve(scales, b, frequencies);
 
       sum = sum.length > 0 ? add(sum, gains) : gains;
@@ -172,7 +183,7 @@ export function renderEq(
 
   if (!minimal) {
     eq.bands.forEach((b, i) => {
-      const bandStroke = getBandStroke(style, i);
+      const bandStroke = getBandStroke(style, i, eq.bypassed);
       const radius = scales.qScale.convertTo(circleScale, getQ(b));
       const bx = scales.frequencyScale.convertTo(xScale, b.frequency);
       const by = scales.gainScale.convertTo(yScale, getGain(b));
@@ -181,7 +192,7 @@ export function renderEq(
   }
 
   const ys = sum.map((g) => scales.gainScale.convertTo(yScale, g) + 0.5);
-  drawSum(ctx, xs, ys, y0, sumStroke, getBandStroke(style, eq.bands.length));
+  drawSum(ctx, xs, ys, y0, sumStroke, sumFill);
 }
 
 export type TooltipData = {
