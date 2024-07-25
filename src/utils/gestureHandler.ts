@@ -228,6 +228,8 @@ export function useGestureHandler<T extends HTMLElement>(
 
   React.useLayoutEffect(() => {
     if (elementRef.current) {
+      console.log("adding gestureHandler");
+
       const c = elementRef.current;
       c.addEventListener("wheel", disableScroll, { passive: false });
       if (enabled) {

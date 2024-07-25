@@ -1,6 +1,6 @@
 {
   "name": "@react-audio-widgets/parametric-eq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A parametric EQ component for React",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,8 +40,8 @@
   },
   "homepage": "https://github.com/react-audio-widgets/parametric-eq#readme",
   "dependencies": {
-    "@babymotte/dynamic-canvas": "^1.1.0",
-    "@babymotte/dynamic-svg": "^1.1.0",
+    "@babymotte/dynamic-canvas": "^2.0.1",
+    "@babymotte/dynamic-svg": "^2.0.1",
     "@babymotte/scales": "^1.0.0",
     "@react-audio-widgets/scale-2d": "^1.1.0"
   }

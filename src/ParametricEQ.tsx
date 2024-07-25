@@ -302,11 +302,10 @@ export default function ParametricEQ({
       }}
     >
       <DynamicSvg
-        parentRef={containerRef}
         style={{
-          pointerEvents: "none",
           gridColumn: 1,
           gridRow: 1,
+          pointerEvents: "none",
         }}
       >
         <Scale2D
@@ -329,9 +328,8 @@ export default function ParametricEQ({
         />
       </DynamicSvg>
       <DynamicCanvas
-        parentRef={containerRef}
         canvasRef={canvasRef}
-        style={{ gridRow: 1, gridColumn: 1 }}
+        style={{ gridRow: 1, gridColumn: 1, width: "100%", height: "100%" }}
       >
         <EqGraph
           minimal={minimal || false}
